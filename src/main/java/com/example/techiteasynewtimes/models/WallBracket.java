@@ -1,9 +1,8 @@
 package com.example.techiteasynewtimes.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="wall_brackets")
@@ -19,6 +18,10 @@ public class WallBracket {
     private String name;
 
     private Double price;
+
+    @ManyToMany (mappedBy = "wallBrackets")
+    private List<Television> televisions;
+
 
     public WallBracket(Long id, String size, Boolean ajustable, String name, Double price) {
         this.id = id;

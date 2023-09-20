@@ -1,9 +1,8 @@
 package com.example.techiteasynewtimes.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="ci_modules")
@@ -16,6 +15,9 @@ public class CIModule {
     private String name;
     private String type;
     private Double price;
+
+    @OneToMany (mappedBy = "ciModule")
+    private List<Television> televisions;
 
     public CIModule(Long id, String name, String type, Double price) {
         this.id = id;

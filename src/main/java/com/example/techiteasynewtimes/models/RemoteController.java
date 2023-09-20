@@ -1,9 +1,10 @@
 package com.example.techiteasynewtimes.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="remote_controllers")
@@ -18,6 +19,18 @@ public class RemoteController {
     private String brand;
     private Double price;
     private Integer originalStock;
+
+    @OneToOne (mappedBy= "remoteController") // mappedBy noteren niet bij de owner, bij de target
+    @JsonIgnore
+    private Television television;
+
+    public Television getTelevision() {
+        return television;
+    }
+
+    public void setTelevision(Television television) {
+        this.television = television;
+    }
 
     public RemoteController(Long id, String compatibleWith, String batteryType, String name, String brand, Double price, Integer originalStock) {
         this.id = id;

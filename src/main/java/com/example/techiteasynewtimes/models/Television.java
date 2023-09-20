@@ -1,9 +1,8 @@
 package com.example.techiteasynewtimes.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="televisions")
@@ -29,6 +28,26 @@ public class Television {
     private Integer originalStock;
     private Integer sold;
 
+
+
+    @OneToOne
+    @JoinColumn(name="compatible_remote_controller")
+    private RemoteController remoteController;
+
+    public RemoteController getRemoteController() {
+        return remoteController;
+    }
+
+    public void setRemoteController(RemoteController remoteController) {
+        this.remoteController = remoteController;
+    }
+
+    @ManyToOne
+    @JoinColumn(name="compatible_ci_module")
+    private CIModule ciModule;
+
+    @ManyToMany
+    private List<WallBracket> wallBrackets;
 
     public Television(String type, String brand, String name, Double price, Double availableSize, Double refreshRate, String screenType, String screenQuality, Boolean smartTv, Boolean wifi, Boolean voiceControl, Boolean hdr, Boolean bluetooth, Boolean ambiLight, Integer originalStock, Integer sold) {
 
