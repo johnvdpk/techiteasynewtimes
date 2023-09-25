@@ -2,6 +2,7 @@ package com.example.techiteasynewtimes.service;
 
 import com.example.techiteasynewtimes.controllers.TelevisionController;
 import com.example.techiteasynewtimes.dtos.TelevisionDto;
+import com.example.techiteasynewtimes.dtos.TelevisionInputDto;
 import com.example.techiteasynewtimes.models.RemoteController;
 import com.example.techiteasynewtimes.models.Television;
 import com.example.techiteasynewtimes.repository.RemoteControllerRepository;
@@ -23,33 +24,8 @@ public class TelevisionService {
         this.remoteControllerRepos = remoteControllerRepos;
     }
 
-    public TelevisionDto createTelevision(TelevisionDto televisionDto) {
-        Television television = new Television();
 
-        television.setId(televisionDto.id);
-        television.setType(televisionDto.type);
-        television.setBrand(televisionDto.brand);
-        television.setName(televisionDto.name);
-        television.setPrice(televisionDto.price);
-        television.setAvailableSize(televisionDto.availableSize);
-        television.setRefreshRate(televisionDto.refreshRate);
-        television.setScreenType(televisionDto.screenType);
-        television.setScreenQuality(televisionDto.screenQuality);
-        television.setSmartTv(televisionDto.smartTv);
-        television.setWifi(televisionDto.wifi);
-        television.setVoiceControl(televisionDto.voiceControl);
-        television.setHdr(televisionDto.hdr);
-        television.setBluetooth(televisionDto.bluetooth);
-        television.setAmbiLight(televisionDto.ambiLight);
-        television.setOriginalStock(televisionDto.originalStock);
-        television.setSold(televisionDto.sold);
-        television = televisionRepos.save(television);
-
-        return televisionDto;
-
-
-    }
-
+    // Television naar televisionDto. (Television van uit de database naar Dto waar de controller weer mee communiceerd).
     public TelevisionDto transferToDto(Television television) {
         TelevisionDto televisionDto = new TelevisionDto();
 
@@ -75,6 +51,35 @@ public class TelevisionService {
         return televisionDto;
     }
 
+    // inputDto naar Television ( Controller naar televison naar repos. naar database)
+    public Television transferToTelevision(TelevisionInputDto televisionInputDto) {
+        Television television = new Television();
+
+        television.setId(televisionInputDto.getId());
+        television.setType(televisionInputDto.getType());
+        television.setBrand(televisionInputDto.getBrand());
+        television.setName(televisionInputDto.getName());
+        television.setPrice(televisionInputDto.getPrice());
+        television.setAvailableSize(televisionInputDto.getAvailableSize());
+        television.setRefreshRate(televisionInputDto.getRefreshRate());
+        television.setScreenType(televisionInputDto.getScreenType());
+        television.setScreenQuality(televisionInputDto.getScreenQuality());
+        television.setSmartTv(televisionInputDto.getSmartTv());
+        television.setWifi(televisionInputDto.getWifi());
+        television.setVoiceControl(televisionInputDto.getVoiceControl());
+        television.setHdr(televisionInputDto.getHdr());
+        television.setBluetooth(televisionInputDto.getBluetooth());
+        television.setAmbiLight(televisionInputDto.getAmbiLight());
+        television.setOriginalStock(televisionInputDto.getOriginalStock());
+        television.setSold(televisionInputDto.getSold());
+        television.setRemoteController(televisionInputDto.getRemoteController());
+
+
+        return television;
+
+    }
+
+
 
     public List<TelevisionDto> getAllTelevisionsByBrand(String brand) {
         List<Television> televisionsByBrand = televisionRepos.findByBrand(brand);
@@ -92,15 +97,33 @@ public class TelevisionService {
 
     public List<TelevisionDto> getAllTelevisions() {
         List<Television> televisions = televisionRepos.findAll();
-        List<TelevisionDto> televisionsDto = new ArrayList<>();
+        List<TelevisionDto> televisionsDtos = new ArrayList<>();
 
         for (Television television : televisions) {
             TelevisionDto televisionDto = transferToDto(television);
-            televisionsDto.add(televisionDto);
+            televisionsDtos.add(televisionDto);
         }
-        return televisionsDto;
+        return televisionsDtos;
 
     }
+
+    public TelevisionDto getTelevisionById(Long id) {
+        Optional<Television> televisionOptional = televisionRepos.findById(id);
+        TelevisionDto televisionDto = new TelevisionDto();
+
+        if (televisionOptional.isPresent()) {
+            Television televisionEntity = televisionOptional.get();
+            televisionDto = transferToDto(televisionEntity);
+
+
+        }
+
+        return televisionDto;
+    }
+
+
+
+
 
     public void addRemoteController(Long televisionid, Long remotecontrollerid) {
 
@@ -116,5 +139,34 @@ public class TelevisionService {
 
         }
     }
+
+
+//         Dit is volgensmij hetzelfde als transfer tot television
+//    public TelevisionInputDto createTelevision(TelevisionInputDto televisionInputDto) {
+//        Television television = new Television();
+//
+//        television.setId(televisonInputDto.setid);
+//        television.setType(televisonInputDto.type);
+//        television.setBrand(televisonInputDto.brand);
+//        television.setName(televisonInputDto.name);
+//        television.setPrice(televisonInputDto.price);
+//        television.setAvailableSize(televisonInputDto.availableSize);
+//        television.setRefreshRate(televisonInputDto.refreshRate);
+//        television.setScreenType(televisonInputDto.screenType);
+//        television.setScreenQuality(televisonInputDto.screenQuality);
+//        television.setSmartTv(televisonInputDto.smartTv);
+//        television.setWifi(televisonInputDto.wifi);
+//        television.setVoiceControl(televisonInputDto.voiceControl);
+//        television.setHdr(televisonInputDto.hdr);
+//        television.setBluetooth(televisonInputDto.bluetooth);
+//        television.setAmbiLight(televisonInputDto.ambiLight);
+//        television.setOriginalStock(televisonInputDto.originalStock);
+//        television.setSold(televisonInputDto.sold);
+//        television = televisionRepos.save(television);
+//
+//        return televisionDto;
+//        }
+
+
 
 }
